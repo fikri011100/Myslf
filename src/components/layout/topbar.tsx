@@ -1,24 +1,26 @@
-import { Avatar } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { CompanySwitcher } from "@/components/layout/company-switcher";
+import { UserMenu } from "@/components/layout/user-menu";
+import type { CompanyWithRole } from "@/lib/company";
 
 export function Topbar({
-  companyName = "Stealien",
-  userName = "fikri",
+  userName,
+  companies,
+  active,
 }: {
-  companyName?: string;
-  userName?: string;
+  userName: string;
+  companies: CompanyWithRole[];
+  active: CompanyWithRole;
 }) {
   return (
     <header className="flex h-16 items-center justify-between border-b border-border bg-card/60 px-6">
       <div className="flex items-center gap-3">
-        <span className="font-display text-sm font-semibold">Workspace</span>
-        <Badge variant="violet">{companyName}</Badge>
+        <span className="hidden font-display text-sm font-semibold sm:inline">
+          Workspace
+        </span>
+        <CompanySwitcher companies={companies} active={active} />
       </div>
       <div className="flex items-center gap-3">
-        <span className="hidden text-sm text-muted-foreground sm:inline">
-          {userName}
-        </span>
-        <Avatar name={userName} />
+        <UserMenu name={userName} />
       </div>
     </header>
   );

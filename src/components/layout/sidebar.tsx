@@ -20,18 +20,22 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard, color: "text-brand-indigo", bg: "bg-brand-indigo/10" },
   { href: "/boards", label: "Boards", icon: KanbanSquare, color: "text-brand-indigo", bg: "bg-brand-indigo/10" },
-  { href: "/company-tasks", label: "Company Tasks", icon: ListChecks, color: "text-brand-violet", bg: "bg-brand-violet/10" },
+  { href: "/company-tasks", label: "Company Tasks", icon: ListChecks, color: "text-brand-violet", bg: "bg-brand-violet/10", roles: ["admin", "super_admin"] },
   { href: "/finance", label: "Finance", icon: Wallet, color: "text-brand-green", bg: "bg-brand-green/10" },
   { href: "/forms", label: "Forms", icon: FileText, color: "text-brand-cyan", bg: "bg-brand-cyan/10" },
   { href: "/chat", label: "Chat & DM", icon: MessagesSquare, color: "text-brand-pink", bg: "bg-brand-pink/10" },
   { href: "/notion-import", label: "Notion Import", icon: Download, color: "text-brand-amber", bg: "bg-brand-amber/10" },
-  { href: "/users", label: "Users", icon: Users, color: "text-brand-violet", bg: "bg-brand-violet/10" },
+  { href: "/users", label: "Users", icon: Users, color: "text-brand-violet", bg: "bg-brand-violet/10", roles: ["super_admin"] },
   { href: "/settings", label: "Settings", icon: Settings, color: "text-muted-foreground", bg: "bg-muted" },
   { href: "/profile", label: "Profile", icon: User, color: "text-muted-foreground", bg: "bg-muted" },
-];
+] as const;
 
-export function Sidebar() {
+export function Sidebar({ activeRole }: { activeRole?: string }) {
   const pathname = usePathname();
+
+  const items = NAV.filter(
+    (n) => !("roles" in n) || (n.roles as readonly string[]).includes(activeRole ?? "")
+  );
 
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-card/60 p-4 md:flex">
@@ -45,7 +49,7 @@ export function Sidebar() {
       </Link>
 
       <nav className="flex flex-1 flex-col gap-1">
-        {NAV.map(({ href, label, icon: Icon, color, bg }) => {
+        {items.map(({ href, label, icon: Icon, color, bg }) => {
           const active =
             href === "/" ? pathname === "/" : pathname.startsWith(href);
           return (
