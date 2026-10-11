@@ -1,0 +1,54 @@
+# Konfigurasi Supabase CLI untuk AIO-Tracker
+# Docs: https://supabase.com/docs/guides/cli/config
+# project_id = ref project Anda (lihat Project Settings > General).
+project_id = "aio-tracker"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[db.pooler]
+enabled = false
+port = 54329
+pool_mode = "transaction"
+
+[studio]
+enabled = true
+port = 54323
+
+[inbucket]
+# Email testing lokal (menangkap email verifikasi auth).
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+# URL dasar aplikasi (ganti ke domain Vercel saat produksi).
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://localhost:3000"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+# Set true untuk WAJIB verifikasi email sebelum login (produksi).
+# Untuk dev lebih cepat bisa false.
+enable_confirmations = false
+
+[realtime]
+enabled = true
